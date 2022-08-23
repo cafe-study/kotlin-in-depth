@@ -29,7 +29,7 @@ fun main() {
        
        lateinit 프로퍼티를 만들기 위해서는
         * 1) 프로퍼티가 변경되어야 하므로 var 로 지정해야 함
-        * 2) 프로퍼티의 타입은 널이 아닌 타입이어야 함
+        * 2) 프로퍼티의 타입은 null이 아닌 타입이어야 함
         * 3) Int나 Boolean같은 Primitive 값을 표현하는 타입이 아니어야 함 
         * 4) lateinit 프로퍼티를 정의하면서 초기화 식을 지정해 값을 바로 대입할 수 없음 (lateinit의 의미가 없음) 
     """)
@@ -40,5 +40,4 @@ fun main() {
     }
     readText()
     println(text)
-
 }

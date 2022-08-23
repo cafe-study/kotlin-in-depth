@@ -21,6 +21,8 @@ fun main() {
     """)
 
     fun isLetterString(s: String): Boolean {
+        /*if (s == null) return false*/
+
         if (s.isEmpty()) return false
         for (ch in s) {
             if (!ch.isLetter()) return false
@@ -50,13 +52,4 @@ fun main() {
         상단 isLetterString() 함수의 파라미터 타입만 String? 로 바꾸면 모든 s 사용법이 잘못되었다고 컴파일 오류가 뜬다. 
           ㄴ isLetterString() 이 null이 될 수 있는 값을 처리하도록 코틀린에서 여러가지 방법을 제공한다. (4.2.2 고고)
     """)
-
-   /* fun isLetterString(s: String?): Boolean {
-        // Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type String?
-        if (s.isEmpty()) return false
-        for (ch in s) { // Not nullable value required to call an 'iterator()' method on for-loop range
-            if (!ch.isLetter()) return false
-        }
-        return true
-    }*/
 }

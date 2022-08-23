@@ -20,8 +20,7 @@ fun main() {
        최상위 프로퍼티에 가시성(public/internal/private) 도 지정할 수 있음 
        최상위 프로퍼티를 임포트할 수도 있음 
     """)
-    /*
-    // util.kt
+/*    // util.kt
     package util
 
     val prefix = "Hello, "
@@ -34,6 +33,5 @@ fun main() {
     fun main() {
         val name = raadLine() ?: return
         println("$prefix$name")
-    }
-    */
+    }*/
 }

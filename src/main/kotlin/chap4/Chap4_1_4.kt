@@ -7,7 +7,6 @@ class Person(val id: Id, val age: Int) {
 }
 
 // 주석1 - 내포된 클래스는 바깥쪽 클래스의 private에 접근할 수 없다.
-/*
 class Outer {
     private val bar = 3
 
@@ -15,16 +14,14 @@ class Outer {
         fun foo() = bar
     }
 
-   class Nested {
+   /*class Nested {
         // Unresolved reference: bar
         fun foo() = bar
-    }
+   }*/
 }
-*/
 
-/*
 // 주석2 - 바깥쪽 클래스는 내포된 클래스 private에 접근할 수 없다.
-class Person(private val id: Id, private val age: Int) {
+/*class Person(private val id: Id, private val age: Int) {
     class Id (private val firstName: String, private val familyName: String)
 
     // error = Cannot access 'firstName': it is private in 'Id'
@@ -51,7 +48,7 @@ fun main() {
     """)
 
     println("""
-       nested clasee (inner 없음) - 외부 클래스 instance 없어도 됨 (관계 없음)
+       nested class (inner 없음) - 외부 클래스 instance 없어도 됨 (관계 없음)
        inner class (inner 있음) - 외부 클래스 Instance 있어야 함 
         * 하단 예시 - person2.Possession() 처럼 인스턴스를 지정해서 생성해야 함  
       

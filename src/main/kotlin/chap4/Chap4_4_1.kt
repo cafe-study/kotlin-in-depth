@@ -56,6 +56,9 @@ fun main() {
     fun describe(app: Application) = app.name // Application은 타입임
     println(Application) // Application은 값임
 
+    println("""
+        디컴파일 해보면 java 처럼 비공개 생성자 + static instance 로 구현된다.
+    """)
 
     println("""
        object 객체 선언도 멤버 함수와 프로퍼티, 초기화 블록을 포함할 수 있다
@@ -67,8 +70,5 @@ fun main() {
     println("""
        자바에는 Utiliy 클래스가 있으나 kotlin에는 static 키워드가 없다. 이런 패턴은 코틀린에서 권장되지 않는다. 
          * 코틀린에서는 top-level function을 작성 후 import함. 
-         
-         https://velog.io/@cchloe2311/Kotlin-Kotlin%EC%97%94-static-%ED%82%A4%EC%9B%8C%EB%93%9C%EA%B0%80-%EC%97%86%EB%8B%A4
-         
     """)
 }

@@ -58,8 +58,8 @@ fun main() {
         inner class Bar {
             var size = 10
         }
-        /*// Class is not allowed here
-        class nestBar {
+        // Class is not allowed here
+        /*class nestBar {
             var size = 10
         }*/
     }

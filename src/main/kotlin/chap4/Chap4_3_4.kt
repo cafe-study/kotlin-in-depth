@@ -20,26 +20,18 @@ fun main() {
         text.length
     }
 
-    // Exception in thread "main" kotlin.UninitializedPropertyAccessException: lateinit property text has not been initialized
+    // 초기화 전이라 Exception in thread "main" kotlin.UninitializedPropertyAccessException: lateinit property text has not been initialized
     // println(textLength)
 
     text = "Hello!"
     println(textLength) // 6
 
     text = "Hello! Hello!"
-    println(textLength) // 6 (val이 => 한번 저장 후 바뀌지 않음)
+    println(textLength) // 6 (val => 한번 저장 후 바뀌지 않음)
 
 
     println("""
-        위임 프로퍼티에서는 스마트 캐스트를 사용할 수 없다.
+        Late initialization : 필요할 때 초기화하고 사용할 수 있음. 초기화하지 않고 쓰면 Exception 발생
+        Lazy initialization : 변수를 선언할 때 초기화 코드도 함께 정의. 변수가 사용될 때 초기화 코드 동작하여 변수가 초기화됨
     """)
-
-    /*fun main() {
-        val data by lazy { readLine() }
-
-        if (data != null) {
-            // Smart cast to 'String' is impossible, because 'data' is a property that has open or custom getter
-            println("Length: ${data.length}")
-        }
-    }*/
 }

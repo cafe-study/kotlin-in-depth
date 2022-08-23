@@ -38,8 +38,6 @@ fun main() {
     class Person2 private constructor() {
         fun showMe() = println("Empty")
     }
-    /*
-    // Cannot access '<init>': it is private in 'Person2'
-    Person2().showMe()
-    */
+    /*// Cannot access '<init>': it is private in 'Person2'
+    Person2().showMe()*/
 }

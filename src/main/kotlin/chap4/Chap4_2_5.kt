@@ -21,7 +21,6 @@ fun main() {
        return 이나 throw같은 제어 흐름을 깨는 코드도 엘비스 연산자 오른쪽에 넣을 수 있다. (if식을 대신할 수 있음) 
     """)
 
-
     class Name(val firstName: String, val familyName: String?)
 
     class Person(val name: Name?) {

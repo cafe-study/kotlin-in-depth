@@ -64,7 +64,7 @@ fun main() {
             val names = fullName.split(" ")
             if (names.size == 2) {
                 firstName = names[0]
-                firstName = names[1]
+                familyName = names[1]
             }
         }
     }*/
@@ -106,7 +106,7 @@ fun main() {
     """)
 
     class Person7(val firstName: String, val familyName: String = "")
-    // = class Person7(val firstName: String, val familyName: String = "") {}
+    // class Person7(val firstName: String, val familyName: String = "") {}
 
     println("주생성자 선언에 디폴트값, 가변인자도 가능")
 
