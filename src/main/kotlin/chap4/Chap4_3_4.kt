@@ -21,7 +21,7 @@ fun main() {
     }
 
     // 초기화 전이라 Exception in thread "main" kotlin.UninitializedPropertyAccessException: lateinit property text has not been initialized
-    // println(textLength)
+    println(textLength)
 
     text = "Hello!"
     println(textLength) // 6

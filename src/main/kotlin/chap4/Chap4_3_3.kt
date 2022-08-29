@@ -30,22 +30,22 @@ fun main() {
     }
 
     println("""
-       fullName은 프로퍼티 형태인 함수와 같다
-       => fullName은 firstName, familyName과 달리 뒷받침하는 필드(backing field)가 없어 프로퍼티를 읽을 때마다 다시 계산된다. 
-     
-       * backing field => 프로퍼티의 실제 값을 저장하는 변수. (예약어 같은..)
+       fullName 은 프로퍼티를 읽을 때마다 다시 계산된다. (firstName, familyName과 달리 뒷받침하는 필드(backing field)가 없음)
+       => fullName은 프로퍼티 형태인 함수와 같다
+       
+       * backing field => 프로퍼티의 실제 값을 저장하는 변수.
          아래 코드 예시) field를 쓰면 get() 로직 안에서 age 값을 사용한다.
                      age 를 쓰면 자기참조로 stackoverflow 가 난다. (순환참조)
 
          backing field는 java 클래스로 디컴파일했을 때 프로퍼티 value를 담기 위해 java field로 생성된다.
     """)
 
-    class Person2(val firstName: String, val familyName: String, age:Int) {
-        val age: Int = age
+    class Person2(val firstName: String, val familyName: String) {
+        var age: Int = 20
             get(): Int {
                 println("Accessing age")
                 return field // backing field 참조 시 field 키워드 사용
-                // return age // Age
+                // return 20
             }
     }
 
@@ -66,11 +66,23 @@ fun main() {
     }
 
     println("""
-        기본 setter - 항상 backing field 생성됨
-        커스터마이즈 setter - 커스터마이즈 setter에서 field 접근하면 생성, 아니면 생성 안됨  
+        프로퍼티에 명시적으로 field를 사용하는 디폴트 접근자나 커스텀 접근자가 하나라도 있으면 -> backing field가 생성된다.
+        프로퍼티에 backing field가 없다면 필드를 초기화할 수 없다. 계산에 의해 값을 돌려주는 프로퍼티의 경우 뒷받침하는 필드가 필요하지 않다.
     """)
 
-    class Person4(var firstName: String, var familyName: String, age:Int) {
+    /*class Person4(val firstName: String, val familyName: String) {
+        // Initializer is not allowed here because this property has no backing field
+        var length1 : Int = 20
+            get(): Int {
+                return firstName.length
+            }
+            set(value) {
+                // custom setter
+            }
+    }*/
+
+    // 계산에 의해 값을 돌려주는 프로퍼티 > backing field 생기지 않음
+    class Person5(var firstName: String, var familyName: String, age:Int) {
         var fullName: String
             get(): String = "$firstName $familyName"
             set(value) {
@@ -88,7 +100,7 @@ fun main() {
         디폴트 getter/setter 역할일 경우 그냥 get/set 키워드만 쓸 수 있음.
     """)
 
-    class Person5(name: String) {
+    class Person6(name: String) {
         var lastChanged: Date? = null
             private set  // Person class 밖에서는 변경할 수 없다
 
@@ -101,7 +113,7 @@ fun main() {
 
     println("""
         코틀린 코딩 관습
-        * 값을 계산할 떄 예외가 발생할 여지가 없거나, 값을 계산하는 비용이 싸거나, 값을 캐시해두거나, 여러번 프로퍼티를 읽거나 함수를 호출해도 
-          항상 똑같은 결과를 내는 경우 -> 함수보다 프로퍼티를 사용하는 쪽을 권장한다.
+        * 값을 계산할 떄 예외가 발생할 여지가 없거나, 값을 계산하는 비용이 싸거나, 값을 캐시해두거나, 
+          여러번 프로퍼티를 읽거나 함수를 호출해도 항상 똑같은 결과를 내는 경우 -> 함수보다 프로퍼티를 사용하는 쪽을 권장한다.
     """)
 }
