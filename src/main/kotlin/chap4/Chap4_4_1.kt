@@ -68,7 +68,7 @@ fun main() {
     """)
 
     println("""
-       자바에는 Utiliy 클래스가 있으나 kotlin에는 static 키워드가 없다. 이런 패턴은 코틀린에서 권장되지 않는다. 
+       자바에는 Utiliy 클래스가 있으나 kotlin에는 static 키워드가 없다. 
          * 코틀린에서는 top-level function을 작성 후 import함. 
     """)
 }

@@ -33,11 +33,4 @@ fun main() {
         * 3) Int나 Boolean같은 Primitive 값을 표현하는 타입이 아니어야 함 
         * 4) lateinit 프로퍼티를 정의하면서 초기화 식을 지정해 값을 바로 대입할 수 없음 (lateinit의 의미가 없음) 
     """)
-
-    lateinit var text: String
-    fun readText() {
-        text = readLine()!!
-    }
-    readText()
-    println(text)
 }

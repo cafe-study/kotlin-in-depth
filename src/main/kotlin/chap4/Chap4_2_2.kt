@@ -15,7 +15,7 @@ fun main() {
         if (s == null) return false
 
         // 아래부터는 null이 될 수 없음
-        if (s.isEmpty()) return false
+        if (s.isEmpty()) return false // Smart cast to kotlin.String
         for (ch in s) {
             if (!ch.isLetter()) return false
         }
@@ -24,8 +24,8 @@ fun main() {
 
     println("널 검사와 사용 지점 사이에서 값이 변경되는 경우 스마트 캐스트가 동작하지 않는다.")
 
-   /*var s = readLine() // String?
-   if (s != null) {
+   var s = readLine() // String?
+   /*if (s != null) {
         s = readLine()
         // 변수값이 바뀌므로 스마트 캐스트 쓸 수 없음
         // Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type String?

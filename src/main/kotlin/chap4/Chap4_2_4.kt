@@ -29,12 +29,4 @@ fun main() {
 
     fun readInt4() = readLine()?.toInt()?.dec()
     val n = readInt4() // Int? 로 반환됨
-
-    // Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type Int?
-    //println(n.toInt())
-    if (n != null) {
-        println(n + 1)
-    } else {
-        println("No Value")
-    }
 }
