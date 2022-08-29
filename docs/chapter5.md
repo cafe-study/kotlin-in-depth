@@ -30,16 +30,19 @@
     - 파라미터 타입을 둘러싼 괄호는 필수
 - 반환 타입은 함수 타입의 함숫값을 호출하면 돌려받게 되는 값의 타입을 정의한다.
     - 반환값이 없어도 반드시 명시 (Unit)
-- 예) (Int, Int) → Boolean
-- 예) 호출방식: op(a, b) 또는 op.invoke(a, b)
+- 예) `(Int, Int) -> Boolean`
+- 예) 호출방식: `op(a, b)` 또는 `op.invoke(a, b)`
 - 함수타입은 변수에 저장가능
     - `val lessThan: (Int, Int) -> Boolean = { a, b -> a < b }`
     - 변수 타입을 생략하면 파라미터 타입추론이 불가능. 이런 경우에는 파라미터 타입을 명시
     - `val lessThan = { a: Int, b: Int -> a < b }`
 - 함수 타입도 널이 될 수 있는 타입으로 지정 가능
-    - `fun measureTime(action: (() -> Unit)?): Long { ... }`
+  ```kotlin
+    fun measureTime(action: (() -> Unit)?): Long {
+        // do something...
+    }
+  ```
 - 함수 타입을 다른 함수 타입 안에 내포시켜서 고차 함수 타입을 정의할 수 있다
-
     ```kotlin
     fun main() {
     	val shifter: (Int) -> (Int) -> Int = { n -> { i -> i + n } }
@@ -50,12 +53,24 @@
     	println(dec(10)) //9
     }
     ```
+    ```kotlin
+    fun main() {
+    	// 파라미터에 이름을 붙여보자면...
+    	val shifter: (n: Int) -> (i: Int) -> Int = { n -> { i -> i + n } }
+    	val inc = shifter(1)
+
+    	println(inc(2)) //3
+    }
+    ```
 
 - `->`는 오른쪽 결합이다
 
     ```kotlin
     fun main() {
     	val evalAtZero: ((Int) -> (Int)) -> Int = { f -> f(0) }
+      	// 아래처럼 쓸 수도 있습니다
+    	// val evalAtZero: ((Int) -> (Int)) -> Int = { it(0) }
+  
     	println(evalAtZero { n -> n + 1 }) //1
     	println(evalAtZero { n -> n - 1 }) //-1
     }
@@ -64,8 +79,16 @@
 - 함수 타입의 파라미터 목록에 들어가는 파라미터 이름은 문서화를 위한 것
 - [자바 vs 코틀린]
     - Java에서 SAM(Single Abstract Method) 인터페이스를 람다식이나 메서드 참조로 인스턴스화 하도록 지원하고 있음
-        - 예) `Consumer<String> consume = s -> System.out.println(s);`
-    - Kotlin 에서는 인터페이스 앞에 ``fun`` 을 붙여서 SAM 인터페이스로
+      ```
+      @FunctionalInterface
+      interface Consumer<T> {
+        void accept(T t);
+      }
+      ```
+      ```
+      Consumer<String> consume = s -> System.out.println(s);
+      ```
+    - Kotlin 에서는 인터페이스 앞에 `fun` 을 붙여서 SAM 인터페이스로
       취급 ([https://kotlinlang.org/docs/fun-interfaces.html](https://kotlinlang.org/docs/fun-interfaces.html))
 
 ### 5.1.3 람다와 익명 함수
@@ -73,10 +96,10 @@
 - 함수형 타입의 값을 만드는 방법 : 람다식을 사용하는 것
 - 람다식
     - 예) `{ result, op -> result + op }`
-        - 파라미터 목록: result, op
-        - 람다식의 몸통(본문)이 되는 식이나 문의 목록: result + op
+        - 파라미터 목록: `result, op`
+        - 람다식의 몸통(본문)이 되는 식이나 문의 목록: `result + op`
     - 반환타입을 지정할 필요가 없다 (람다식 본문으로부터 자동으로 추론된다)
-    - 파라미터 목록에 괄호가 없다 (파라미터를 괄호로 감싸면 구조문해 선언이 된다
+    - 파라미터 목록에 괄호가 없다 (파라미터를 괄호로 감싸면 구조문해 선언이 된다)
     - 람다가 마지막 파라미터인 경우, 함수를 호출할 때 인자를 둘러싸는 괄호 밖에 이 람다를 위치시킬 수 있다
 
         ```kotlin
@@ -85,7 +108,6 @@
         ```
 
     - 람다에 인자가 없으면 화살표 기호를 생략할 수 있다
-
         ```kotlin
         fun measureTime(action: () -> Unit): Long {
         	val start = System.nanoTime()
@@ -96,7 +118,7 @@
         val time = measureTime { 1 + 2 }
         ```
 
-    - 인자가 하나밖에 없는 람다를 단순화해 사용할 수 있는 문법을 제공한다 (유일한 파라미터를 it 으로 지칭한다)
+    - 인자가 하나밖에 없는 람다를 단순화해 사용할 수 있는 문법을 제공한다 (유일한 파라미터를 `it` 으로 지칭한다)
 
         ```kotlin
         fun check(s: String, condition: (Char) -> Boolean): Boolean {
@@ -111,7 +133,7 @@
         }
         ```
 
-    - 사용하지 않는 람다 파라미터를 밑줄 기호로 지정할 수 있다
+    - 사용하지 않는 람다 파라미터를 밑줄(`_`) 기호로 지정할 수 있다
 
         ```kotlin
         fun check(s: String, condition: (Int, Char) -> Boolean): Boolean {
