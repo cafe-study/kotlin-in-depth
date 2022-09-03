@@ -15,4 +15,4 @@
 | inline class | X     | X         |
 | object       | O     | X         |
 
-https://github.com/cafe-study/kotlin-in-depth/blob/6be1fb90745534b69f72c6e33cd54e43b906dcf6/src/main/kotlin/chap8/chapter8.md#L6-L6
+https://github.com/cafe-study/kotlin-in-depth/blob/3fbc61887509fb0efabb8f8f127f0d7722e674e4/src/main/kotlin/chap8/Chap8_1_1.kt#L3-L26
