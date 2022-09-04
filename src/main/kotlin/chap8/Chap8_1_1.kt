@@ -3,7 +3,7 @@ package chap8
 open class Vehicle {
     var currentSpeed = 0
 
-    fun start() {
+    open fun start() {
         println("I'm moving")
     }
 
@@ -50,3 +50,12 @@ class MyBase
 //open value class MyString(val value: String)
 
 //value class MyStringInherited(val value: String) : MyBase()
+
+/**
+ * 객체는 자유롭게 열린 클래스를 상속할 수 있음 *(동반 객체 포함)*
+ */
+open class Person(val name: String, val age: Int) {
+    companion object : Person("Unknown", 0)
+}
+
+object JohnDoe : Person("John Doe", 30)
