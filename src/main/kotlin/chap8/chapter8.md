@@ -83,3 +83,32 @@ https://github.com/cafe-study/kotlin-in-depth/blob/aaafafce5eeeaf4ab14fbf062237e
     * Person의 init이 호출되는 시점에 Student가 초기화되지 않아 university가 null인 상황
 
 https://github.com/cafe-study/kotlin-in-depth/blob/aaafafce5eeeaf4ab14fbf062237e5021bb55c24/src/main/kotlin/chap8/Chap8_1_2_3.kt#L3-L28
+
+## 8.1.3 타입 검사와 캐스팅
+
+### is 연산자
+* 자바의 instanceof 연산자와 동일한 역할을 수행
+* null 처리 관점에서 차이가 있음
+  * instanceof는 null에 대해 항상 false 반환
+  * is는 오른쪽 타입이 null이 될수 있는지 여부에 따라 결과가 달라짐
+
+https://github.com/cafe-study/kotlin-in-depth/blob/1051b68463eaed5367c8c022f9e2abe9ea4f2977/src/main/kotlin/chap8/Chap8_1_3.kt#L4-L11
+### is 연산자의 스마트 캐스트
+* is 연산자를 통해 타입이 확인된 내부 코드에서는 스마트 케이스가 지원
+
+https://github.com/cafe-study/kotlin-in-depth/blob/1051b68463eaed5367c8c022f9e2abe9ea4f2977/src/main/kotlin/chap8/Chap8_1_3.kt#L12-L23
+
+* 아래와 같은 상황에서는 스마트캐스트 제한 사항
+  * 기본적으로 불변(val)에 대해서만 작동. 가변(var) 프로퍼티는 외부에서 변경할 수 있으므로 불가능
+  * 프로퍼티나 커스텀 접근자가 정의된 변수
+  * 위임을 사용하는 프로퍼티나 지역 변수
+  * open 멤버 프로퍼티
+  * 검사하는 시점과 변수를 읽는 시점 사이에 값을 변경한 경우
+
+### as 연산자
+* 어떤 값의 타입을 강제로 변경하기 위해 사용
+* as?
+  * as는 변환하려는 객체가 변환하려는 타입과 일치하지 않으면 에러를 발생시킴 
+  * as?는 변환하려는 객체가 변환하려는 타입과 일치하지 않으면 null을 반환
+  
+https://github.com/cafe-study/kotlin-in-depth/blob/1051b68463eaed5367c8c022f9e2abe9ea4f2977/src/main/kotlin/chap8/Chap8_1_3.kt#L25-L30
