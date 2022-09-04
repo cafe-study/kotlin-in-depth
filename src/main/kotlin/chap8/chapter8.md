@@ -61,3 +61,25 @@ https://github.com/cafe-study/kotlin-in-depth/blob/f8df534b553c3c20a8eaa382d75cd
 ### super
 
 * 상위 클래스 버전의 함수나 프로퍼티를 호출하고 싶을 때 사용
+
+## 8.1.2 하위 클래스 초기화
+
+### 상위 클래스의 초기화 코드 호출
+
+* 코틀린은 별다른 코드 작성 없이도 상위 클래스의 초기화를 연쇄적으로 실행한다.
+
+https://github.com/cafe-study/kotlin-in-depth/blob/aaafafce5eeeaf4ab14fbf062237e5021bb55c24/src/main/kotlin/chap8/Chap8_1_2.kt#L3-L29
+
+### 상위 클래스의 생성자 호출하기
+
+* 위임 호출 구문 사용 (예제 참고)
+
+https://github.com/cafe-study/kotlin-in-depth/blob/aaafafce5eeeaf4ab14fbf062237e5021bb55c24/src/main/kotlin/chap8/Chap8_1_2_2.kt#L3-L14
+
+### this 유출
+
+* 코틀린의 null이 될 수 없는 타입의 변수 값이 null이 될 수도 있는 아주 드문 경우
+* university 변수가 null이 나오는 이유
+    * Person의 init이 호출되는 시점에 Student가 초기화되지 않아 university가 null인 상황
+
+https://github.com/cafe-study/kotlin-in-depth/blob/aaafafce5eeeaf4ab14fbf062237e5021bb55c24/src/main/kotlin/chap8/Chap8_1_2_3.kt#L3-L28
