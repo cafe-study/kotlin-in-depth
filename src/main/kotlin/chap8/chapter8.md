@@ -164,4 +164,17 @@ https://github.com/cafe-study/kotlin-in-depth/blob/ac8dd070a044982a6a555bf41aebe
 
 https://github.com/cafe-study/kotlin-in-depth/blob/ac8dd070a044982a6a555bf41aebe87983083774/src/main/kotlin/chap8/Chap8_1_4_2.kt#L18-L20
 
+# 8.2 추상 클래스와 인터페이스
 
+## 8.2.1 추상 클래스와 추상 멤버
+
+* 자바와 마찬가지로 코틀린도 추상 클래스를 지원 (자바와 거의 동일하므로 가볍게 특징만 짚어보고 넘어가자.)
+  * 추상 클래스는 abstract 키워드를 붙여 정의 (open을 추가로 붙일 필요가 없음)
+  * 추상 클래스는 인스턴스 생성이 불가
+  * 추상 클래스 생성자는 오직 하위클래스의 생성자에서 위임 호출로만 호출할 수 있음
+  * 추상 클래스는 추상 멤버를 정의할 수 있으며, 하위 클래스에서는 반드시 멤버를 오버라이드 해야 함
+    * 추상 프로퍼티는 초기화 할 수 없고, 명시적인 접근자나 by 절을 추가할 수 없음
+    * 추상 함수는 본문이 없어야 함
+    * 추상 프로퍼티와 함수 모두 명시적으로 반환 타입을 지정해야 함
+
+https://github.com/cafe-study/kotlin-in-depth/blob/0c7d4a3f06390c21e44aafa7bf1192c69b3fbede/src/main/kotlin/chap8/Chap8_2_1.kt#L3-L12
