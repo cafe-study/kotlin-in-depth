@@ -178,3 +178,28 @@ https://github.com/cafe-study/kotlin-in-depth/blob/ac8dd070a044982a6a555bf41aebe
     * 추상 프로퍼티와 함수 모두 명시적으로 반환 타입을 지정해야 함
 
 https://github.com/cafe-study/kotlin-in-depth/blob/0c7d4a3f06390c21e44aafa7bf1192c69b3fbede/src/main/kotlin/chap8/Chap8_2_1.kt#L3-L12
+
+## 8.2.2 인터페이스
+
+* 자바와 거의 동일하므로 가볍게 특징만 짚어보고 넘어가자
+  * 메서드나 프로퍼티를 포함하지만 자체적인 인스턴스 상태나 생성자를 만들 수는 없는 타입
+  * interface 키워드로 정의 (open을 붙일 필요는 없다)
+  * 인터페이스 멤버는 디폴트가 추상 멤버 (abstract를 붙일 필요는 없다)
+  * 인터페이스는 클래스나 다른 인터페이스의 상위 타입이 될 수 있다.
+  * **인터페이스의 멤버를 상속해 구현할 경우에도 override 키워드를 추가해야 함**
+  * **코틀린에서는 상속과 구현 모두 : 를 사용해 표시**
+  * 인터페이스의 함수나 프로퍼티에 구현을 추가할 수 있음
+  * 인터페이스의 멤버는 기본적으로 상속이 가능(open)하며, final로 정의하면 컴파일 오류가 발생한다.
+    * **만약 인터페이스에 상속할 수 없는 멤버를 넣고 싶다면 확장함수를 이용하자**
+  * 인터페이스 안에는 뒷받침하는 필드가 들어있는 프로퍼티를 정의할 수 없다. (상태를 사용할 수 없음 -> 다이아몬드 상속 문제를 방지하기 위해)
+  * 인터페이스는 생성자를 사용할 수 없다.
+
+https://github.com/cafe-study/kotlin-in-depth/blob/master/src/main/kotlin/chap8/Chap8_2_2.kt#L3-L77
+
+### 인터페이스 다중상속
+
+* 자바와 마찬가지로 코틀린 인터페이스도 다중 상속을 지원한다. (자바와 동일하므로, 조금 어려운 케이스만 짚어보고 넘어가자.)
+* 동일한 시그니쳐를 가진 구현된 멤버를 가지는 인터페이스를 둘 이상 상속하는 경우, super를 통한 멤버 호출이 모호해진다. 이럴 때는 상위 타입을 한정시킨 super 키워드를 사용해야 한다. (사실 자바8도 동일하다)
+
+https://github.com/cafe-study/kotlin-in-depth/blob/master/src/main/kotlin/chap8/Chap8_2_2_2.kt#L3-L26
+
