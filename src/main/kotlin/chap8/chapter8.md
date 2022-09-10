@@ -169,30 +169,30 @@ https://github.com/cafe-study/kotlin-in-depth/blob/ac8dd070a044982a6a555bf41aebe
 ## 8.2.1 추상 클래스와 추상 멤버
 
 * 자바와 마찬가지로 코틀린도 추상 클래스를 지원 (자바와 거의 동일하므로 가볍게 특징만 짚어보고 넘어가자.)
-  * 추상 클래스는 abstract 키워드를 붙여 정의 (open을 추가로 붙일 필요가 없음)
-  * 추상 클래스는 인스턴스 생성이 불가
-  * 추상 클래스 생성자는 오직 하위클래스의 생성자에서 위임 호출로만 호출할 수 있음
-  * 추상 클래스는 추상 멤버를 정의할 수 있으며, 하위 클래스에서는 반드시 멤버를 오버라이드 해야 함
-    * 추상 프로퍼티는 초기화 할 수 없고, 명시적인 접근자나 by 절을 추가할 수 없음
-    * 추상 함수는 본문이 없어야 함
-    * 추상 프로퍼티와 함수 모두 명시적으로 반환 타입을 지정해야 함
+    * 추상 클래스는 abstract 키워드를 붙여 정의 (open을 추가로 붙일 필요가 없음)
+    * 추상 클래스는 인스턴스 생성이 불가
+    * 추상 클래스 생성자는 오직 하위클래스의 생성자에서 위임 호출로만 호출할 수 있음
+    * 추상 클래스는 추상 멤버를 정의할 수 있으며, 하위 클래스에서는 반드시 멤버를 오버라이드 해야 함
+        * 추상 프로퍼티는 초기화 할 수 없고, 명시적인 접근자나 by 절을 추가할 수 없음
+        * 추상 함수는 본문이 없어야 함
+        * 추상 프로퍼티와 함수 모두 명시적으로 반환 타입을 지정해야 함
 
 https://github.com/cafe-study/kotlin-in-depth/blob/0c7d4a3f06390c21e44aafa7bf1192c69b3fbede/src/main/kotlin/chap8/Chap8_2_1.kt#L3-L12
 
 ## 8.2.2 인터페이스
 
 * 자바와 거의 동일하므로 가볍게 특징만 짚어보고 넘어가자
-  * 메서드나 프로퍼티를 포함하지만 자체적인 인스턴스 상태나 생성자를 만들 수는 없는 타입
-  * interface 키워드로 정의 (open을 붙일 필요는 없다)
-  * 인터페이스 멤버는 디폴트가 추상 멤버 (abstract를 붙일 필요는 없다)
-  * 인터페이스는 클래스나 다른 인터페이스의 상위 타입이 될 수 있다.
-  * **인터페이스의 멤버를 상속해 구현할 경우에도 override 키워드를 추가해야 함**
-  * **코틀린에서는 상속과 구현 모두 : 를 사용해 표시**
-  * 인터페이스의 함수나 프로퍼티에 구현을 추가할 수 있음
-  * 인터페이스의 멤버는 기본적으로 상속이 가능(open)하며, final로 정의하면 컴파일 오류가 발생한다.
-    * **만약 인터페이스에 상속할 수 없는 멤버를 넣고 싶다면 확장함수를 이용하자**
-  * 인터페이스 안에는 뒷받침하는 필드가 들어있는 프로퍼티를 정의할 수 없다. (상태를 사용할 수 없음 -> 다이아몬드 상속 문제를 방지하기 위해)
-  * 인터페이스는 생성자를 사용할 수 없다.
+    * 메서드나 프로퍼티를 포함하지만 자체적인 인스턴스 상태나 생성자를 만들 수는 없는 타입
+    * interface 키워드로 정의 (open을 붙일 필요는 없다)
+    * 인터페이스 멤버는 디폴트가 추상 멤버 (abstract를 붙일 필요는 없다)
+    * 인터페이스는 클래스나 다른 인터페이스의 상위 타입이 될 수 있다.
+    * **인터페이스의 멤버를 상속해 구현할 경우에도 override 키워드를 추가해야 함**
+    * **코틀린에서는 상속과 구현 모두 : 를 사용해 표시**
+    * 인터페이스의 함수나 프로퍼티에 구현을 추가할 수 있음
+    * 인터페이스의 멤버는 기본적으로 상속이 가능(open)하며, final로 정의하면 컴파일 오류가 발생한다.
+        * **만약 인터페이스에 상속할 수 없는 멤버를 넣고 싶다면 확장함수를 이용하자**
+    * 인터페이스 안에는 뒷받침하는 필드가 들어있는 프로퍼티를 정의할 수 없다. (상태를 사용할 수 없음 -> 다이아몬드 상속 문제를 방지하기 위해)
+    * 인터페이스는 생성자를 사용할 수 없다.
 
 https://github.com/cafe-study/kotlin-in-depth/blob/master/src/main/kotlin/chap8/Chap8_2_2.kt#L3-L77
 
@@ -203,3 +203,98 @@ https://github.com/cafe-study/kotlin-in-depth/blob/master/src/main/kotlin/chap8/
 
 https://github.com/cafe-study/kotlin-in-depth/blob/master/src/main/kotlin/chap8/Chap8_2_2_2.kt#L3-L26
 
+## 8.2.3 봉인된 클래스와 인터페이스
+
+https://github.com/cafe-study/kotlin-in-depth/blob/948dacb013224051dc47b308532a35df0913c324/src/main/kotlin/chap8/Chap8_2_3.kt#L3-L39
+
+* 특정 클래스를 상속받는 서브 클래스를 제한하고 싶을 때 sealed 클래스를 사용할 수 있다.
+* 봉인된 클래스를 사용하면
+    * when 구문에서 불필요한 else를 쓰지 않아도 된다.
+* 어떤 클래스를 sealed로 지정하면 이 클래스의 상속을 아래와 같이 제한할 수 있다.
+    * 내포된 클래스 또는 객체
+    * 같은 파일 안에서 최상위 클래스
+* 상속 제한은 봉인된 클래스를 직접 상속한 클래스에 대해서만 성립한다. (즉, sealed 클래스를 상속한 클래스를 상속할 수 있음)
+
+```kotlin
+sealed class Result {
+    class Success(val value: Any) : Result()
+    open class Error(val message: String) : Result()
+}
+
+class FatalError(message: String) : Result.Error(message)
+```
+
+* (코틀린 1.1부터) 봉인된 클래스가 다른 클래스를 상속할 수도 있다. 즉 봉인된 클래스의 하위 클래스가 다시 봉인된 클래스가 될 수 있다.
+
+```kotlin
+
+import java.lang.NumberFormatException
+
+sealed class Result
+
+class Success(val value: Any) : Result()
+
+sealed class Error : Result() {
+    abstract val message: String
+}
+
+class ErrorWithException(val exception: Exception) : Error() {
+    override val message: String
+        get() = exception.message ?: ""
+}
+
+class ErrorWithMessage(override val message: String) : Error()
+```
+
+* 데이터 클래스와 봉인된 클래스를 함께 사용할 수 있다.
+
+https://github.com/cafe-study/kotlin-in-depth/blob/948dacb013224051dc47b308532a35df0913c324/src/main/kotlin/chap8/Chap8_2_3_2.kt#L3-L27
+
+* sealed 변경자는 인터페이스에 적용할 수 없다.
+    * 즉, sealed 클래스의 하위 클래스는 sealed 클래스 하나만 상속할 수 있다. (다른 인터페이스를 상속할 수 없다는 뜻은 아니다. sealed가 인터페이스에도 적용되면 다중 구현이 가능하므로 문제가 될 수 있다.)
+
+* 봉인된 클래스를 객체로 구현할 수도 있다.
+    * 모든 직접 상속자가 객체라면 enum 처럼 동작한다.
+
+```kotlin
+sealed class Result {
+    object Completed : Result()
+    class ValueProduced(val value: Any) : Result()
+    class Error(val message: String) : Result()
+}
+```
+
+## 8.2.4 위임
+
+* 기존 클래스를 확장하거나 변경해야 하는데, 상속할 수 없다면 위임 패턴을 사용할 수 있다.
+  https://github.com/cafe-study/kotlin-in-depth/blob/948dacb013224051dc47b308532a35df0913c324/src/main/kotlin/chap8/Chap8_2_4.kt#L3-L34
+* 위 접근 방식의 문제는 필요한 메서드나 프로퍼티를 다른 객체에 위임하기 위해 작성해야 하는 준비코드가 너무 많음
+* 코틀린은 위임을 처리하는 기능을 내장하고 있음
+    * 클래스 위임을 사용하면 번거로운 준비코드를 사용하지 않고도 객체 합성과 상속의 이점을 살릴 수 있다.
+    * 상위 인터페이스 이름 바로 뒤에 by 키워드를 붙이고 그 다음에 위임할 인스턴스를 쓰면 됨
+
+``` kotlin
+  class Alias(
+    private val realIdentity: PersonData,
+    private val newIdentity: PersonData
+  ): PersonData by newIdentity
+```
+
+* 구현을 바꾸고 싶다면 직접 오버라이드 할 수 있음
+    * 위임과 객체 식을 조합하면 원래 객체와 약간 다른 구현을 만들때 유용하다.
+
+```kotlin
+class Alias(
+    private val realIdentity: PersonData,
+    private val newIdentity: PersonData
+) : PersonData by newIdentity {
+    override val age: Int
+        get() = realIdentity.age
+}
+
+fun PersonData.aliased(newIdentity: PersonData) =
+    object : PersonData by newIdentity {
+        override val age: Int
+            get() = this@aliased.age
+    }
+```
