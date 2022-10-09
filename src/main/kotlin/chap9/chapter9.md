@@ -104,3 +104,39 @@ class Registry<T> where T : Named, T : Identified {
     val items = ArrayList<T>()
 }
 ```
+
+### 9.1.3 타입 소거와 구체화
+
+* 런타임에서는 제네릭 타입 인자에 대한 정보가 코드에서 지워진다.
+    * 타입 소거: 자바 5에서 제네릭을 추가할 때 하위 호환성을 유지하는 과정에서 제네릭으로 설정한 타임 인자에 대한 정보는 런타임에서 지워짐
+```kotlin
+// [CANNOT_CHECK_FOR_ERASED] Cannot check for instance of erased type: T
+fun <T> TreeNode<Any>.isInstanceOf(): Boolean = data is T && children.all { it.isInstanceOf<T>() }
+```
+* 마찬가지 이유로 제네릭 타입에 대해 is 연산자를 적용하는 것도 의미가 없음. 다만 이런 경우 컴파일러가 타입 인자와 타입 파라미터가 서로 일치하는지 확인하여 경고나 오류를 보고
+```kotlin
+    val list = listOf(1,2,3)
+    list is List<Number>
+    // [CANNOT_CHECK_FOR_ERASED] Cannot check for instance of erased type: List<String>
+    list is List<String>
+```
+
+* 코틀린은 항상 제네릭 타입이 들어가야 하므로, 어떤 컬랙션인지 확인하고 싶다면 다음과 같이 *를 사용
+```kotlin
+list is List<*>
+map is Map<*, *>
+```
+
+#### 제네릭 타입소거를 코틀린에서 해결하는 방법
+* 자바에서 타입 소거를 해결하기 위해 아래와 같은 방법이 가능
+  1. 캐스트: 문제가 컴파일 시점에 해결되지 않음
+  2. 리플랙션: 성능에 영향을 미칠 수 있음
+* 코틀린의 구체화 (reified)
+  * reified 키워드는 인라인일때만 사용 가능
+  * 자바의 접근방식과 달리 안전하고 빠름
+  * 인라인 함수를 사용하므로, 컴파일된 코드가 커지는 경향이 있음 
+  * 한계
+    * 구체화된 타입 파라미터를 통해 생성자를 호출하거나 동반 객체에 접근할 수 없음
+    * 구체화된 타입 파라미터를 구체화하지 않은 타입 파라미터로 대신할 수 없음  
+
+https://github.com/cafe-study/kotlin-in-depth/blob/bfd85a84e802d2ccaf7ffb9a3c4be425968a9a69/src/main/kotlin/chap9/Chap9_1_3.kt#L5-L31
