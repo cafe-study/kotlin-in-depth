@@ -109,34 +109,132 @@ class Registry<T> where T : Named, T : Identified {
 
 * 런타임에서는 제네릭 타입 인자에 대한 정보가 코드에서 지워진다.
     * 타입 소거: 자바 5에서 제네릭을 추가할 때 하위 호환성을 유지하는 과정에서 제네릭으로 설정한 타임 인자에 대한 정보는 런타임에서 지워짐
+
 ```kotlin
 // [CANNOT_CHECK_FOR_ERASED] Cannot check for instance of erased type: T
 fun <T> TreeNode<Any>.isInstanceOf(): Boolean = data is T && children.all { it.isInstanceOf<T>() }
 ```
+
 * 마찬가지 이유로 제네릭 타입에 대해 is 연산자를 적용하는 것도 의미가 없음. 다만 이런 경우 컴파일러가 타입 인자와 타입 파라미터가 서로 일치하는지 확인하여 경고나 오류를 보고
+
 ```kotlin
-    val list = listOf(1,2,3)
-    list is List<Number>
-    // [CANNOT_CHECK_FOR_ERASED] Cannot check for instance of erased type: List<String>
-    list is List<String>
+    val list = listOf(1, 2, 3)
+list is List<Number>
+// [CANNOT_CHECK_FOR_ERASED] Cannot check for instance of erased type: List<String>
+list is List<String>
 ```
 
 * 코틀린은 항상 제네릭 타입이 들어가야 하므로, 어떤 컬랙션인지 확인하고 싶다면 다음과 같이 *를 사용
+
 ```kotlin
 list is List<*>
 map is Map<*, *>
 ```
 
 #### 제네릭 타입소거를 코틀린에서 해결하는 방법
+
 * 자바에서 타입 소거를 해결하기 위해 아래와 같은 방법이 가능
-  1. 캐스트: 문제가 컴파일 시점에 해결되지 않음
-  2. 리플랙션: 성능에 영향을 미칠 수 있음
+    1. 캐스트: 문제가 컴파일 시점에 해결되지 않음
+    2. 리플랙션: 성능에 영향을 미칠 수 있음
 * 코틀린의 구체화 (reified)
-  * reified 키워드는 인라인일때만 사용 가능
-  * 자바의 접근방식과 달리 안전하고 빠름
-  * 인라인 함수를 사용하므로, 컴파일된 코드가 커지는 경향이 있음 
-  * 한계
-    * 구체화된 타입 파라미터를 통해 생성자를 호출하거나 동반 객체에 접근할 수 없음
-    * 구체화된 타입 파라미터를 구체화하지 않은 타입 파라미터로 대신할 수 없음  
+    * reified 키워드는 인라인일때만 사용 가능
+    * 자바의 접근방식과 달리 안전하고 빠름
+    * 인라인 함수를 사용하므로, 컴파일된 코드가 커지는 경향이 있음
+    * 한계
+        * 구체화된 타입 파라미터를 통해 생성자를 호출하거나 동반 객체에 접근할 수 없음
+        * 구체화된 타입 파라미터를 구체화하지 않은 타입 파라미터로 대신할 수 없음
 
 https://github.com/cafe-study/kotlin-in-depth/blob/bfd85a84e802d2ccaf7ffb9a3c4be425968a9a69/src/main/kotlin/chap9/Chap9_1_3.kt#L5-L31
+
+# 9.2 변성
+
+## 9.2.1 변성: 생산자와 소비자 구분
+
+* 무공변(invariant): 타입 파라미터 사이에 하위타입 관계가 성립해도 제네릭 타입 사이에는 하위타입 관계가 생기지 않음
+
+```kotlin
+val node: TreeNode<Any> = TreeNode<String>("Hello") // error: type mismatch
+```
+
+* 제네릭 타입이 자신의 타입 파라미터를 취급하는 방법
+    1. 생산자: T 타입의 값을 반환하는 연산만 제공하고 T타입의 값을 입력으로 받는 연산은 제공하지 않음
+    2. 소비자: T 타입의 값을 입력으로 받기만 하고, T 타입의 값을 반환하지는 않음
+    3. 위 두가지 경우에 해당하지 않는 나머지 타입들
+
+* 세번째 타입(생산자도 소비자도 아닌 타입)의 경우 타입 안정성을 깨지않고는 하위 타입 관계를 유지할 수 없음
+    * 즉 TreeNode<Any>와 TreeNode<String> 간에 상위/하위타입 관계를 설정할 수 없음
+
+```kotlin
+val stringNode = TreeNode<String>("Hello")
+val anyNode: TreeNode<Any> = stringNode // 실제로 허용되지 않으나, 허용이 된다면
+anyNode.addChild(123)
+val s = stringNode.children.first() // 123이 string으로 캐스트되면서 예외가 발생 (계약이 깨짐)
+```
+
+### 불변 컬렉션 타입의 변성
+
+* 불변 컬랙션 타입은 T 타입의 값을 만들어내기만 하고 결코 소비하지 않음
+    * List<String>은 List<Any>의 능력도 가짐 -> 공변적 (covariant)
+    * 코틀린에서 생산자 역할을 하는 타입은 모두 공변적임
+
+```kotlin
+val stringProducer: () -> String = { "Hello" }
+val anyProducer: () -> Any = stringProducer
+println(anyProducer())
+```
+
+### 공변적 != 불변성
+
+```kotlin
+// 가변적인 리스트이지만, 생산자의 역할만 수행하므로 공변적 (NonGrowingList<String> 은 NonGrowingList<Any>가 할 수 있는 모든 일을 할 수 있음)
+interface NonGrowingList<T> {
+    val size: Int
+    fun get(index: Int): Int
+    fun remove(index: Int)
+}
+
+// 불변적이지만 생산자가 아니기 때문에 T의 하위타입 관계를 유지하지 않음
+interface Set<T> {
+    fun contains(element: T): Boolean
+}
+```
+
+### 소비자 타입의 변성
+
+* 타입 파라미터의 하위 타입관계를 역방향으로 유지해줌 (생산자와 반대)
+    * Set<Number>는 Set<Int>의 하위 타입처럼 동작함 -> 반공변적 (contravariant)
+
+```kotlin
+val anyConsumer: (Any) -> Unit = { println(it) }
+val stringConsumer: (String) -> Unit = anyConsumer
+stringConsumer("Hello")
+```
+
+### 변성 정리
+
+* 주어진 제네릭 타입 X<T,..> 에 대해
+    * X가 생산자 역할: T를 공변적으로 선언할 수 있고, A가 B의 하위 타입이면 X<A>도 X<B>의 하위 타입이 됨
+    * X가 소비자 역할: T를 반공변적으로 선언할 수 있고, B가 A의 하위 타입이면 X<A>가 X<B>의 하위 타입이 됨
+    * 나머지 경우는 X는 T에 대해 무공변
+* 자바의 PECS(Producer Extends, Consumer Super)
+
+## 9.2.2 선언 지점 변성
+
+* 타입파라미터의 변성을 선언 자체에 지정하는 방식
+* 예: concat이라는 함수를 정의하고, Number의 하위 타입을 넣을수 있게 하고 싶음 -> out 키워드 사용
+  https://github.com/cafe-study/kotlin-in-depth/blob/94d47e269af4b85175f3421e60dee4b1cd20c267/src/main/kotlin/chap9/Chap9_2_2.kt#L3-L34
+* out은 제네릭이 생산자 역할/in은 제네릭이 소비자역할을 할 때 사용할 수 있음
+  https://github.com/cafe-study/kotlin-in-depth/blob/94d47e269af4b85175f3421e60dee4b1cd20c267/src/main/kotlin/chap9/Chap9_2_2_2.kt#L32-L32
+* TreeNode는 in/out 연산을 모두 가지고 있어 공변/반공변으로 정의가 불가능
+    * 모든 자식을 만드는 함수를 만들고, 이를 공변으로 사용하고 싶다면? -> 다음 장에서 설명
+
+## 9.2.3. 프로젝션을 사용한 사용 지점 변성
+
+* 타입 파라미터의 변성을 함수내에서 정의
+  * 선언 지점 변성과 마찬가지로, 지정한 변성에서 사용할 수 없는 연산을 사용하려 하면 컴파일 에러가 발생
+https://github.com/cafe-study/kotlin-in-depth/blob/94d47e269af4b85175f3421e60dee4b1cd20c267/src/main/kotlin/chap9/Chap9_2_3.kt#L17-L17
+
+* 코틀린 프로젝션은 근본적으로 자바의 extends/super 와일드카드와 같은 역할을 함
+* 프로젝션이 적용된 타입 인자에 해당하는 선언 지점 변성은 의미가 없음
+  * 선언/프로젝션이 동일하면 경고를 띄우고
+  * 다르면 컴파일 오류 발생
