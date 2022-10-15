@@ -228,13 +228,53 @@ stringConsumer("Hello")
 * TreeNode는 in/out 연산을 모두 가지고 있어 공변/반공변으로 정의가 불가능
     * 모든 자식을 만드는 함수를 만들고, 이를 공변으로 사용하고 싶다면? -> 다음 장에서 설명
 
-## 9.2.3. 프로젝션을 사용한 사용 지점 변성
+## 9.2.3 프로젝션을 사용한 사용 지점 변성
 
 * 타입 파라미터의 변성을 함수내에서 정의
-  * 선언 지점 변성과 마찬가지로, 지정한 변성에서 사용할 수 없는 연산을 사용하려 하면 컴파일 에러가 발생
-https://github.com/cafe-study/kotlin-in-depth/blob/94d47e269af4b85175f3421e60dee4b1cd20c267/src/main/kotlin/chap9/Chap9_2_3.kt#L17-L17
+    * 선언 지점 변성과 마찬가지로, 지정한 변성에서 사용할 수 없는 연산을 사용하려 하면 컴파일 에러가 발생
+      https://github.com/cafe-study/kotlin-in-depth/blob/94d47e269af4b85175f3421e60dee4b1cd20c267/src/main/kotlin/chap9/Chap9_2_3.kt#L17-L17
 
 * 코틀린 프로젝션은 근본적으로 자바의 extends/super 와일드카드와 같은 역할을 함
 * 프로젝션이 적용된 타입 인자에 해당하는 선언 지점 변성은 의미가 없음
-  * 선언/프로젝션이 동일하면 경고를 띄우고
-  * 다르면 컴파일 오류 발생
+    * 선언/프로젝션이 동일하면 경고를 띄우고
+    * 다르면 컴파일 오류 발생
+      https://github.com/cafe-study/kotlin-in-depth/blob/master/src/main/kotlin/chap9/Chap9_2_3_2.kt#L20-L20
+
+## 9.2.4 스타 프로젝션
+
+* 스타 프로젝션을 사용하면 타입 인자가 중요하지 않거나 알려져 있지 않은 제네릭 타입을 간결하게 표현할 수 있음
+    * 자바의 ?와 동일
+      https://github.com/cafe-study/kotlin-in-depth/blob/master/src/main/kotlin/chap9/Chap9_2_4.kt#L15-L15
+* 타입 파라미터에 바운드가 둘 이상 있다면 *로 명시적은 out 프로젝션을 대신할 수없음
+  https://github.com/cafe-study/kotlin-in-depth/blob/master/src/main/kotlin/chap9/Chap9_2_4_2.kt#L3-L3
+* *는 선언 지점 변성이 붙은 타입 파라미터를 대신할 때 쓸 수 있음
+
+```kotlin
+interface Consumer<in T> {
+    fun consume(value: T)
+}
+
+interface Producer<out T> {
+    fun produce(): T
+}
+
+fun main() {
+    val starProducer: Producer<*>
+    val starConsumer: Consumer<*>   // Consumer<in Nothing>
+}
+```
+
+# 9.3 타입 별명
+
+* typealias로 정의하며, 긴 탕비이름을 짧게 부를 수 있는 별명을 지정함
+* 각종 타입, 내포된 클래스등을 지정할 수 있으며, 제네릭 타입을 포함할 수 있음
+* 가시성을 사용할 수 있음
+* 타입 별명은 기존 타입을 가리키는 새로운 방법을 추가해주는 것 뿐이므로 원래의 타입과 자유롭게 바꿔 쓸 수잇음
+* 제약
+    * 최상위에만 선언 가능
+    * 제네릭 타입 별명에 제약이나 바운드를 선언할 수 없음
+      https://github.com/cafe-study/kotlin-in-depth/blob/master/src/main/kotlin/chap9/Chap9_3.kt#L274-L274
+* 참고: 타입에 대한 새 이름을 제공하는 방법
+    * 임포트 별명: 제네릭 사용 불가, import 된 파일 내에서만 사용 가능
+    * 상속: 제네릭, 가시성 제어 가능, 새로운 타입이 정의되는 것이므로 상속받은 타입과 자유롭게 바꿔쓰는 것은 불가능
+    * 인라인 클래스: 원래 타입과 호환되지 않는 새로운 타입을 만들어냄
