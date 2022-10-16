@@ -27,15 +27,17 @@ https://github.com/cafe-study/kotlin-in-depth/blob/0a9264f2eeb9edaf9f1ab6bb7845a
     * 예) TreeNode<Any>
 * 대부분의 경우 컴파일러가 문맥에서 타입 인자를 추론해줌
     * 예외: 상위 클래스 생성자에 대한 위임 호출
-        * 타입 파라미터는 상송하지 않는다
+* 타입 파라미터는 상속하지 않는다
 
 ```kotlin
 open class DataHolder<T>(val data: T)
 
 class StringDataHolder(data: String) : DataHolder<String>(data)
 
+// 타입 파라미터는 상속하지 않음
 class TreeNode<T>(data: T) : DataHolder<T>(data) { ... }
 
+// 생성자 위임 호출의 타입인자는 추론하지 못함
 // error: one type argument expected for class DataHolder<T>
 class StringDataHolder2(data: String) : DataHolder(data)
 
@@ -59,17 +61,17 @@ object EmptyTree<T>
 ### 9.1.2 바운드와 제약
 
 * 특정 타입 파라미터가 어떤 타입의 상위 바운드 또는 하위 바운드의 값이길 바랄 때 아래와 같이 선언할 수 있음
-    * 자바의 <T extends Object> 와 동일함
-      https://github.com/cafe-study/kotlin-in-depth/blob/0a9264f2eeb9edaf9f1ab6bb7845a24aa909a030/src/main/kotlin/chap9/Chap9_1_2.kt#L6-L16
+  https://github.com/cafe-study/kotlin-in-depth/blob/0a9264f2eeb9edaf9f1ab6bb7845a24aa909a030/src/main/kotlin/chap9/Chap9_1_2.kt#L6-L16
 
 * 하위 타입이 아닐 경우 컴파일 오류가 발생
   https://github.com/cafe-study/kotlin-in-depth/blob/0a9264f2eeb9edaf9f1ab6bb7845a24aa909a030/src/main/kotlin/chap9/Chap9_1_2.kt#L20-L37
 
-* 상위 바운드가 final 클래스이면 해당되는 하위타입이 하나 밖에 없으므로 제네릭의 의미가 없음
+* 상위 바운드가 final 클래스이면 해당되는 하위타입이 하나 밖에 없으므로 제네릭의 의미가 없음 (그래서 warning이 발생)
 
 ```kotlin
 // 제네릭이 아닌 함수로 대신할 수 있다.
 // fun TreeNode<Int>.sum(): Int { ... }
+// [FINAL_UPPER_BOUND] 'Int' is a final type, and thus a value of the type parameter is predetermined
 fun <T : Int> TreeNode<T>.sum(): Int {
     var sum = 0
     walkDepthFirst { sum += it }
@@ -83,6 +85,8 @@ fun <T : Int> TreeNode<T>.sum(): Int {
 * 바운드가 자신보다 앞에 있는 타입 파라미터를 가리킬 수 있음
   https://github.com/cafe-study/kotlin-in-depth/blob/0a9264f2eeb9edaf9f1ab6bb7845a24aa909a030/src/main/kotlin/chap9/Chap9_1_2_3.kt#L6-L22
 
+* 코틀린의 타입 파라미터의 상위 바운드는 자바의 상위 바운드와 비슷함
+    * T extends Number -> T: Number
 * null이 아닌 타입을 지정하려면 상위 바운드도 null이 아닌 타입을 지정
 
 ```kotlin
@@ -118,7 +122,7 @@ fun <T> TreeNode<Any>.isInstanceOf(): Boolean = data is T && children.all { it.i
 * 마찬가지 이유로 제네릭 타입에 대해 is 연산자를 적용하는 것도 의미가 없음. 다만 이런 경우 컴파일러가 타입 인자와 타입 파라미터가 서로 일치하는지 확인하여 경고나 오류를 보고
 
 ```kotlin
-    val list = listOf(1, 2, 3)
+val list = listOf(1, 2, 3)
 list is List<Number>
 // [CANNOT_CHECK_FOR_ERASED] Cannot check for instance of erased type: List<String>
 list is List<String>
@@ -216,7 +220,6 @@ stringConsumer("Hello")
     * X가 생산자 역할: T를 공변적으로 선언할 수 있고, A가 B의 하위 타입이면 X<A>도 X<B>의 하위 타입이 됨
     * X가 소비자 역할: T를 반공변적으로 선언할 수 있고, B가 A의 하위 타입이면 X<A>가 X<B>의 하위 타입이 됨
     * 나머지 경우는 X는 T에 대해 무공변
-* 자바의 PECS(Producer Extends, Consumer Super)
 
 ## 9.2.2 선언 지점 변성
 
@@ -235,6 +238,7 @@ stringConsumer("Hello")
       https://github.com/cafe-study/kotlin-in-depth/blob/94d47e269af4b85175f3421e60dee4b1cd20c267/src/main/kotlin/chap9/Chap9_2_3.kt#L17-L17
 
 * 코틀린 프로젝션은 근본적으로 자바의 extends/super 와일드카드와 같은 역할을 함
+    * 자바의 PECS(Producer Extends, Consumer Super)
 * 프로젝션이 적용된 타입 인자에 해당하는 선언 지점 변성은 의미가 없음
     * 선언/프로젝션이 동일하면 경고를 띄우고
     * 다르면 컴파일 오류 발생
@@ -245,7 +249,7 @@ stringConsumer("Hello")
 * 스타 프로젝션을 사용하면 타입 인자가 중요하지 않거나 알려져 있지 않은 제네릭 타입을 간결하게 표현할 수 있음
     * 자바의 ?와 동일
       https://github.com/cafe-study/kotlin-in-depth/blob/master/src/main/kotlin/chap9/Chap9_2_4.kt#L15-L15
-* 타입 파라미터에 바운드가 둘 이상 있다면 *로 명시적은 out 프로젝션을 대신할 수없음
+* 타입 파라미터에 바운드가 둘 이상 있다면 *로 명시적인 out 프로젝션을 대신할 수 없음
   https://github.com/cafe-study/kotlin-in-depth/blob/master/src/main/kotlin/chap9/Chap9_2_4_2.kt#L3-L3
 * *는 선언 지점 변성이 붙은 타입 파라미터를 대신할 때 쓸 수 있음
 
@@ -259,8 +263,8 @@ interface Producer<out T> {
 }
 
 fun main() {
-    val starProducer: Producer<*>
-    val starConsumer: Consumer<*>   // Consumer<in Nothing>
+    val starProducer: Producer<*>   // Producer<Any?>와 같음
+    val starConsumer: Consumer<*>   // Consumer<Nothing>와 같음
 }
 ```
 

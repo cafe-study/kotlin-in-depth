@@ -8,6 +8,7 @@ fun <T> TreeNode<T>.addSubtree(node: TreeNode<out T>): TreeNode<T> {
     return newNode
 }
 
+// 아래와 같이 첫 번째 타입에 의해 바운드되는 두 번째 타입 파라미터로 처리도 가능
 //fun <T, U : T> TreeNode<T>.addSubtree(node: TreeNode<U>): TreeNode<T> {
 //    val newNode = addChild(node.data)
 //    node.children.forEach { newNode.addSubtree(it) }
