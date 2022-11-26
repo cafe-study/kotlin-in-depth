@@ -24,3 +24,7 @@ https://github.com/cafe-study/kotlin-in-depth/blob/40050b171fbca658f6283d4c38218
 
 https://github.com/cafe-study/kotlin-in-depth/blob/40050b171fbca658f6283d4c3821822248a24486/ktor-example/src/test/kotlin/com/example/ApplicationTest.kt#L16-L27
 * test 코드
+
+
+# 16.2 서버 관련 기능
+* 서버 압축 기능
