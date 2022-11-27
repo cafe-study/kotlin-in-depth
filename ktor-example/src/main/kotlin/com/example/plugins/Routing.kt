@@ -106,5 +106,52 @@ fun Application.configureRouting() {
                 }
             }
         }
+        // p. 636 - redirect 예제
+        route("/redirect", HttpMethod.Get) {
+            handle {
+                call.respondRedirect("/redirect/target")
+            }
+
+            route("/target", HttpMethod.Get) {
+                handle {
+                    call.respondHtml {
+                        body {
+                            h1 {
+                                +"Redirect Target!!!"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // p. 636 - 쿼리 파라미터 사용 예제
+        get("/sum") {
+            val left = call.request.queryParameters["left"]?.toIntOrNull()
+            val right = call.request.queryParameters["right"]?.toIntOrNull()
+
+            if (left != null && right != null) {
+                call.respondText { "${left + right}" }
+            } else {
+                call.respondText { "Invalid arguments" }
+            }
+        }
+        // p.636 - 같은 이름의 파라미터가 한 번 이상 쓰인 경우 getAll() 함수 사용
+        get("/sum2") {
+            val args = call.request.queryParameters.getAll("arg")
+            if (args == null) {
+                call.respondText { "No Data" }
+                return@get
+            }
+            var sum = 0
+            for (arg in args) {
+                val num = arg.toIntOrNull()
+                if (num == null) {
+                    call.respondText { "Invalid arguments" }
+                    return@get
+                }
+                sum += num
+            }
+            call.respondText { "$sum" }
+        }
     }
 }
