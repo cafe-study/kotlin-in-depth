@@ -39,6 +39,7 @@ fun main() {
 
 /**
  * data class 는 open을 추가할 수 없음
+ * 읽어볼거리 - https://stackoverflow.com/questions/26444145/extend-data-class-in-kotlin
  */
 //open data class Person(val name: String, val age: Int)
 

@@ -12,15 +12,8 @@ group = "com.study.cafe.kotlin"
 version = "1.0-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
-ext {
-    val kotlinVersion = "1.5.10"
-}
-
 repositories {
     mavenCentral()
-    maven {
-        url = uri("https://dl.bFixedray.com/binkley/maven")
-    }
 }
 
 dependencies {
@@ -31,6 +24,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 
     testImplementation(kotlin("test"))
 
@@ -42,8 +36,8 @@ dependencies {
 
     testImplementation("io.kotest:kotest-framework-datatest:5.4.2")
     testImplementation("org.jetbrains.kotlin", "kotlin-test-junit5", "1.3.72")
-    //testImplementation("com.ninja-squad:springmockk:2.0.3")
-    //testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("com.ninja-squad:springmockk:3.1.1")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks {
